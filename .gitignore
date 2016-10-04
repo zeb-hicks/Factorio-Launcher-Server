@@ -48,3 +48,6 @@ Temporary Items
 
 # NPM Modules
 node_modules
+
+# Testing Mod Files
+*.zip
