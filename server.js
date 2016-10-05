@@ -28,3 +28,31 @@ function loadServerConfig() {
 		console.log('Unable to load and parse the server configuration.', err);
 	}
 }
+
+function saveServerConfig() {
+
+}
+
+function updateModList() {
+	var mods = [];
+	fs.readdir(path.join(__dirname, 'mods'), (err, files) => {
+		try {
+			if (err) {
+				files = [];
+			}
+			for (let i = 0; i < files.length; i++) {
+				// Decompress the mod zip file.
+				let mz = new zip(path.join(__dirname, 'mods', files[i]));
+				// Store the folder name for the mod zip file.
+				let fname = files[i].replace('.zip', '');
+				// Extract and parse the info.json from the mod and push it onto the mod list.
+				mods.push(JSON.parse(mz.readAsText(fname + '/info.json')));
+			}
+			serverConfigObject.mods = mods;
+		} catch (err) {
+			console.log('Error attempting to decompress and read mod file(s).', err);
+		};
+	});
+}
+
+updateModList();
