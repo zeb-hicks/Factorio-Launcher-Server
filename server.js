@@ -49,6 +49,7 @@ function updateModList() {
 				files = [];
 			}
 			for (let i = 0; i < files.length; i++) {
+				if (files[i].indexOf('zip') == -1) continue;
 				// Decompress the mod zip file.
 				let mz = new zip(path.join(modDir, files[i]));
 				// Store the folder name for the mod zip file.
