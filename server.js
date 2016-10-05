@@ -10,13 +10,15 @@ var http = require('http').Server(app);
 
 var serverConfigObject = {};
 
+var modDir = path.join(__dirname, 'mods');
+
 app.get('/', (req, res) => {
 	res.json(serverConfigObject);
 	res.end();
 });
 
 app.get('/mods/:mod.zip', (req, res) => {
-	res.sendFile(path.join(__dirname, 'mods', req.params.mod + '.zip'));
+	res.sendFile(path.join(modDir, req.params.mod + '.zip'));
 });
 
 http.listen('8767');
@@ -29,6 +31,10 @@ function loadServerConfig() {
 		var o = JSON.parse(cfg);
 		// Assign the data from the file to the config state object.
 		Object.assign(serverConfigObject, o);
+		// Update mod path.
+		if (o.modDir !== undefined) {
+			modDir = o.modDir;
+		}
 	} catch (err) {
 		console.log('Unable to load and parse the server configuration.', err);
 	}
@@ -36,7 +42,7 @@ function loadServerConfig() {
 
 function updateModList() {
 	var mods = [];
-	fs.readdir(path.join(__dirname, 'mods'), (err, files) => {
+	fs.readdir(modDir, (err, files) => {
 		try {
 			serverConfigObject.mods.length = 0;
 			if (err) {
@@ -44,7 +50,7 @@ function updateModList() {
 			}
 			for (let i = 0; i < files.length; i++) {
 				// Decompress the mod zip file.
-				let mz = new zip(path.join(__dirname, 'mods', files[i]));
+				let mz = new zip(path.join(modDir, files[i]));
 				// Store the folder name for the mod zip file.
 				let fname = files[i].replace('.zip', '');
 				// Extract and parse the info.json from the mod and push it onto the mod list.
