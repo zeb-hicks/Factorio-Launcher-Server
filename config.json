@@ -1,6 +1,6 @@
 {
 	"name": "Nimphious' Test Server",
-	"version": "0.14.9",
-	"gameDir": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Factorio",
+	"version": "0.14.12",
+	"modDir": "/home/factorio/mods",
 	"mods": []
 }
