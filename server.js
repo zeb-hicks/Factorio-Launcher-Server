@@ -17,6 +17,23 @@ app.get('/', (req, res) => {
 	res.end();
 });
 
+app.get('/mods/', (req, res) => {
+	var page = "";
+
+	page += "<html>" + "\n";
+	page += "  <head>" + "\n";
+	page += "    <title>Mods List</title>" + "\n";
+	page += "  </head>" + "\n";
+	page += "  <body>" + "\n";
+
+	for (var mod in serverConfigObject.mods) {
+		page += "    <a href=\"" + mod.url + "\">" + mod.name + "</a><br />" + "\n";
+	}
+
+	page += "  </body>" + "\n";
+	page += "</html>";
+});
+
 app.get('/mods/:mod.zip', (req, res) => {
 	res.sendFile(path.join(modDir, req.params.mod + '.zip'));
 });
