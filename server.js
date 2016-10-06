@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 	res.end();
 });
 
-app.get('/mods/', (req, res) => {
+app.get('/mods', (req, res) => {
 	var page = "";
 
 	page += "<html>" + "\n";
@@ -26,12 +26,15 @@ app.get('/mods/', (req, res) => {
 	page += "  </head>" + "\n";
 	page += "  <body>" + "\n";
 
-	for (var mod in serverConfigObject.mods) {
+	for (var i in serverConfigObject.mods) {
+		let mod = serverConfigObject.mods[i];
 		page += "    <a href=\"" + mod.url + "\">" + mod.name + "</a><br />" + "\n";
 	}
 
 	page += "  </body>" + "\n";
 	page += "</html>";
+
+	res.end(page);
 });
 
 app.get('/mods/:mod.zip', (req, res) => {
