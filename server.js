@@ -69,17 +69,21 @@ function updateModList() {
 				files = [];
 			}
 			for (let i = 0; i < files.length; i++) {
-				if (files[i].indexOf('zip') == -1) continue;
-				// Decompress the mod zip file.
-				let mz = new zip(path.join(modDir, files[i]));
-				// Store the folder name for the mod zip file.
-				let fname = files[i].replace('.zip', '');
-				// Extract and parse the info.json from the mod.
-				let info = JSON.parse(mz.readAsText(fname + '/info.json'));
-				// Insert the URL for downloading the mod.
-				info.url = '/mods/' + files[i];
-				// Push the mod onto the list.
-				serverConfigObject.mods.push(info);
+				try {
+					if (files[i].indexOf('zip') == -1) continue;
+					// Decompress the mod zip file.
+					let mz = new zip(path.join(modDir, files[i]));
+					// Store the folder name for the mod zip file.
+					let fname = files[i].replace('.zip', '');
+					// Extract and parse the info.json from the mod.
+					let info = JSON.parse(mz.readAsText(fname + '/info.json'));
+					// Insert the URL for downloading the mod.
+					info.url = '/mods/' + files[i];
+					// Push the mod onto the list.
+					serverConfigObject.mods.push(info);
+				} catch (err) {
+					console.log('Unable to decompress and decode mod info for "' + files[i] + '"');
+				}
 			}
 		} catch (err) {
 			console.log('Error attempting to decompress and read mod file(s).', err);
